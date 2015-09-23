@@ -33,7 +33,7 @@ import de.yadrone.base.manager.AbstractManager;
 import de.yadrone.base.navdata.CadType;
 import de.yadrone.base.utils.ARDroneUtils;
 
-public class CommandManager extends AbstractManager 
+public class CommandManager extends AbstractManager
 {
 
 	public final static String APPLICATION_ID = "aabbccdd";

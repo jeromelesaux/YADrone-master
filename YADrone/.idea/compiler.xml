@@ -26,8 +26,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="YADrone" target="1.5" />
       <module name="yadrone" target="1.5" />
+      <module name="YADrone" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
