@@ -29,7 +29,7 @@ public class GameControllerCommandManager extends Thread {
         }
         for (Controller c : controllers) {
             System.out.println("Found controller " + c.getName());
-            if (c.getType().equals(Controller.Type.GAMEPAD)) {
+            if (c.getType().equals(Controller.Type.GAMEPAD) || c.getType().equals(Controller.Type.FINGERSTICK)) {
                 controller = c;
                 break;
             }
