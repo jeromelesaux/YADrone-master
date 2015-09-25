@@ -80,6 +80,16 @@ public class CCPropertyManager extends Properties
 		setProperty("controller_game_command_layout",isControllerGame+"");
 		store();
 	}
+
+	public void setControllerGameCommandKey(String key, String value) {
+		setProperty(key,value);
+		store();
+	}
+
+	public String getControllerGameCommandKey(String key) {
+		String property = getProperty(key);
+		return property;
+	}
 	
 	public String getVideoFormat()
 	{

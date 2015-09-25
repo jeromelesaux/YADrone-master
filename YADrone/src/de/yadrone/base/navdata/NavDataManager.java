@@ -33,11 +33,11 @@ import de.yadrone.base.utils.ARDroneUtils;
 
 //TODO: refactor parsing code into separate classes but need to think about how to put the listener code
 //option: make it one abstract listener, disadvantage: each client has many methods to implement
-public class NavDataManager extends AbstractManager 
+public class NavDataManager extends AbstractManager
 {
 
 	private IExceptionListener excListener;
-	
+
 	private static final int NB_ACCS = 3;
 	private static final int NB_GYROS = 3;
 
@@ -80,14 +80,14 @@ public class NavDataManager extends AbstractManager
 	private ArrayList<PWMlistener> pwmlistener = new ArrayList<PWMlistener>();
 	private ArrayList<ReferencesListener> referencesListener = new ArrayList<ReferencesListener>();
 	private ArrayList<TrimsListener> trimsListener = new ArrayList<TrimsListener>();
-	
+
 	private long lastSequenceNumber = 1;
 
 	private int mask = 0;
 	private boolean maskChanged = true;
 	private int checksum = 0;
 
-	public NavDataManager(InetAddress inetaddr, CommandManager manager, IExceptionListener excListener) 
+	public NavDataManager(InetAddress inetaddr, CommandManager manager, IExceptionListener excListener)
 	{
 		super(inetaddr);
 		this.manager = manager;
@@ -116,12 +116,12 @@ public class NavDataManager extends AbstractManager
 		this.attitudeListener.remove(attitudeListener);
 		setMask(this.attitudeListener.size() == 0, new int[] { DEMO_TAG, EULER_ANGLES_TAG, WIND_TAG });
 	}
-	
+
 	public void addAltitudeListener(AltitudeListener altitudeListener) {
 		this.altitudeListener.add(altitudeListener);
 		setMask(this.altitudeListener.size() == 1, new int[] { DEMO_TAG, ALTITUDE_TAG });
 	}
-	
+
 	public void removeAltitudeListener(AltitudeListener altitudeListener) {
 		this.altitudeListener.remove(altitudeListener);
 		setMask(this.altitudeListener.size() == 0, new int[] { DEMO_TAG, ALTITUDE_TAG });
@@ -131,7 +131,7 @@ public class NavDataManager extends AbstractManager
 		this.batteryListener.add(batteryListener);
 		setMask(this.batteryListener.size() == 1, new int[] { DEMO_TAG, RAW_MEASURES_TAG });
 	}
-	
+
 	public void removeBatteryListener(BatteryListener batteryListener) {
 		this.batteryListener.remove(batteryListener);
 		setMask(this.batteryListener.size() == 0, new int[] { DEMO_TAG, RAW_MEASURES_TAG });
@@ -146,7 +146,7 @@ public class NavDataManager extends AbstractManager
 		this.timeListener.remove(timeListener);
 		setMask(this.timeListener.size() == 0, new int[] { TIME_TAG });
 	}
-	
+
 	public void addStateListener(StateListener stateListener) {
 		this.stateListener.add(stateListener);
 		setMask(this.stateListener.size() == 1, new int[] { DEMO_TAG });
@@ -156,7 +156,7 @@ public class NavDataManager extends AbstractManager
 		this.stateListener.remove(stateListener);
 		setMask(this.stateListener.size() == 0, new int[] { DEMO_TAG });
 	}
-	
+
 	public void addVelocityListener(VelocityListener velocityListener) {
 		this.velocityListener.add(velocityListener);
 		setMask(this.velocityListener.size() == 1, new int[] { DEMO_TAG });
@@ -166,11 +166,11 @@ public class NavDataManager extends AbstractManager
 		this.velocityListener.remove(velocityListener);
 		setMask(this.velocityListener.size() == 0, new int[] { DEMO_TAG });
 	}
-	
+
 	public void addVisionListener(VisionListener visionListener) {
 		this.visionListener.add(visionListener);
 		setMask(this.visionListener.size() == 1, new int[] { DEMO_TAG, TRACKERS_SEND_TAG, VISION_DETECT_TAG, VISION_OF_TAG,
-			VISION_TAG, VISION_PERF_TAG, VISION_RAW_TAG });
+				VISION_TAG, VISION_PERF_TAG, VISION_RAW_TAG });
 	}
 
 	public void removeVisionListener(VisionListener visionListener) {
@@ -178,7 +178,7 @@ public class NavDataManager extends AbstractManager
 		setMask(this.visionListener.size() == 0, new int[] { DEMO_TAG, TRACKERS_SEND_TAG, VISION_DETECT_TAG, VISION_OF_TAG,
 				VISION_TAG, VISION_PERF_TAG, VISION_RAW_TAG });
 	}
-	
+
 	public void addMagnetoListener(MagnetoListener magnetoListener) {
 		this.magnetoListener.add(magnetoListener);
 		setMask(this.magnetoListener.size() == 1, new int[] { MAGNETO_TAG });
@@ -188,12 +188,12 @@ public class NavDataManager extends AbstractManager
 		this.magnetoListener.remove(magnetoListener);
 		setMask(this.magnetoListener.size() == 0, new int[] { MAGNETO_TAG });
 	}
-	
+
 	public void addAcceleroListener(AcceleroListener acceleroListener) {
 		this.acceleroListener.add(acceleroListener);
 		setMask(this.acceleroListener.size() == 1, new int[] { PHYS_MEASURES_TAG, RAW_MEASURES_TAG });
 	}
-	
+
 	public void removeAcceleroListener(AcceleroListener acceleroListener) {
 		this.acceleroListener.remove(acceleroListener);
 		setMask(this.acceleroListener.size() == 0, new int[] { PHYS_MEASURES_TAG, RAW_MEASURES_TAG });
@@ -203,7 +203,7 @@ public class NavDataManager extends AbstractManager
 		this.gyroListener.add(gyroListener);
 		setMask(this.gyroListener.size() == 1, new int[] { GYROS_OFFSETS_TAG, PHYS_MEASURES_TAG, RAW_MEASURES_TAG });
 	}
-	
+
 	public void removeGyroListener(GyroListener gyroListener) {
 		this.gyroListener.remove(gyroListener);
 		setMask(this.gyroListener.size() == 0, new int[] { GYROS_OFFSETS_TAG, PHYS_MEASURES_TAG, RAW_MEASURES_TAG });
@@ -218,12 +218,12 @@ public class NavDataManager extends AbstractManager
 		this.ultrasoundListener.remove(ultrasoundListener);
 		setMask(this.ultrasoundListener.size() == 0, new int[] { RAW_MEASURES_TAG });
 	}
-	
+
 	public void addAdcListener(AdcListener adcListener) {
 		this.adcListener.add(adcListener);
 		setMask(this.adcListener.size() == 1, new int[] { ADC_DATA_FRAME_TAG });
 	}
-	
+
 	public void removeAdcListener(AdcListener adcListener) {
 		this.adcListener.remove(adcListener);
 		setMask(this.adcListener.size() == 0, new int[] { ADC_DATA_FRAME_TAG });
@@ -238,7 +238,7 @@ public class NavDataManager extends AbstractManager
 		this.counterListener.remove(counterListener);
 		setMask(this.counterListener.size() == 0, new int[] { GAMES_TAG });
 	}
-	
+
 	public void addPressureListener(PressureListener pressureListener) {
 		this.pressureListener.add(pressureListener);
 		setMask(this.pressureListener.size() == 1, new int[] { KALMAN_PRESSURE_TAG, PRESSURE_RAW_TAG });
@@ -248,7 +248,7 @@ public class NavDataManager extends AbstractManager
 		this.pressureListener.remove(pressureListener);
 		setMask(this.pressureListener.size() == 0, new int[] { KALMAN_PRESSURE_TAG, PRESSURE_RAW_TAG });
 	}
-	
+
 	public void addTemperatureListener(TemperatureListener temperatureListener) {
 		this.temperatureListener.add(temperatureListener);
 		setMask(this.temperatureListener.size() == 1, new int[] { PRESSURE_RAW_TAG });
@@ -258,7 +258,7 @@ public class NavDataManager extends AbstractManager
 		this.temperatureListener.remove(temperatureListener);
 		setMask(this.temperatureListener.size() == 0, new int[] { PRESSURE_RAW_TAG });
 	}
-	
+
 	public void addWindListener(WindListener windListener) {
 		this.windListener.add(windListener);
 		setMask(this.windListener.size() == 1, new int[] { WIND_TAG });
@@ -268,7 +268,7 @@ public class NavDataManager extends AbstractManager
 		this.windListener.remove(windListener);
 		setMask(this.windListener.size() == 0, new int[] { WIND_TAG });
 	}
-	
+
 	public void addVideoListener(VideoListener videoListener) {
 		this.videoListener.add(videoListener);
 		setMask(this.videoListener.size() == 1, new int[] { HDVIDEO_STREAM_TAG, VIDEO_STREAM_TAG });
@@ -278,7 +278,7 @@ public class NavDataManager extends AbstractManager
 		this.videoListener.remove(videoListener);
 		setMask(this.videoListener.size() == 0, new int[] { HDVIDEO_STREAM_TAG, VIDEO_STREAM_TAG });
 	}
-	
+
 	public void addWifiListener(WifiListener wifiListener) {
 		this.wifiListener.add(wifiListener);
 		setMask(this.wifiListener.size() == 1, new int[] { WIFI_TAG });
@@ -288,7 +288,7 @@ public class NavDataManager extends AbstractManager
 		this.wifiListener.remove(wifiListener);
 		setMask(this.wifiListener.size() == 0, new int[] { WIFI_TAG });
 	}
-	
+
 	public void addZimmu3000Listener(Zimmu3000Listener zimmu3000Listener) {
 		this.zimmu3000Listener.add(zimmu3000Listener);
 		setMask(this.zimmu3000Listener.size() == 1, new int[] { ZIMMU_3000_TAG });
@@ -298,7 +298,7 @@ public class NavDataManager extends AbstractManager
 		this.zimmu3000Listener.remove(zimmu3000Listener);
 		setMask(this.zimmu3000Listener.size() == 0, new int[] { ZIMMU_3000_TAG });
 	}
-	
+
 	public void addPWMlistener(PWMlistener pwmlistener) {
 		this.pwmlistener.add(pwmlistener);
 		setMask(this.pwmlistener.size() == 1, new int[] { PWM_TAG });
@@ -308,12 +308,12 @@ public class NavDataManager extends AbstractManager
 		this.pwmlistener.remove(pwmlistener);
 		setMask(this.pwmlistener.size() == 0, new int[] { PWM_TAG });
 	}
-	
+
 	public void addReferencesListener(ReferencesListener referencesListener) {
 		this.referencesListener.add(referencesListener);
 		setMask(this.referencesListener.size() == 1, new int[] { RC_REFERENCES_TAG, REFERENCES_TAG });
 	}
-	
+
 	public void removeReferencesListener(ReferencesListener referencesListener) {
 		this.referencesListener.remove(referencesListener);
 		setMask(this.referencesListener.size() == 0, new int[] { RC_REFERENCES_TAG, REFERENCES_TAG });
@@ -328,7 +328,7 @@ public class NavDataManager extends AbstractManager
 		this.trimsListener.remove(trimsListener);
 		setMask(this.trimsListener.size() == 0, new int[] { TRIMS_TAG });
 	}
-	
+
 	@Override
 	public void run() {
 		connect(ARDroneUtils.NAV_PORT);
@@ -380,13 +380,18 @@ public class NavDataManager extends AbstractManager
 					manager.setNavDataOptions(mask);
 					maskChanged = false;
 				}
-			} 
-			catch (SocketTimeoutException t) 
+			}
+			catch (SocketTimeoutException t)
 			{
 				System.err.println("Navdata reception timeout");
 				excListener.exeptionOccurred(new de.yadrone.base.exception.NavDataException(t));
-			} 
-			catch (Throwable t) 
+				if (!this.socket.isConnected()) {
+					// Try to reconnect to the ARDreon if the socket is currently closed
+					this.connect(ARDroneUtils.NAV_PORT);
+					this.ticklePort(ARDroneUtils.NAV_PORT);
+				}
+			}
+			catch (Throwable t)
 			{
 				// continue whatever goes wrong
 				t.printStackTrace();
@@ -469,93 +474,93 @@ public class NavDataManager extends AbstractManager
 
 	private void parseOption(int tag, ByteBuffer optionData) {
 		switch (tag) {
-		case CKS_TAG:
-			parseCksOption(optionData);
-			break;
-		case DEMO_TAG:
-			parseDemoOption(optionData);
-			break;
-		case TIME_TAG:
-			parseTimeOption(optionData);
-			break;
-		case RAW_MEASURES_TAG:
-			parseRawMeasuresOption(optionData);
-			break;
-		case PHYS_MEASURES_TAG:
-			parsePhysMeasuresOption(optionData);
-			break;
-		case GYROS_OFFSETS_TAG:
-			parseGyrosOffsetsOption(optionData);
-			break;
-		case EULER_ANGLES_TAG:
-			parseEulerAnglesOption(optionData);
-			break;
-		case REFERENCES_TAG:
-			parseReferencesOption(optionData);
-			break;
-		case TRIMS_TAG:
-			parseTrimsOption(optionData);
-			break;
-		case RC_REFERENCES_TAG:
-			parseRcReferencesOption(optionData);
-			break;
-		case PWM_TAG:
-			parsePWMOption(optionData);
-			break;
-		case ALTITUDE_TAG:
-			parseAltitudeOption(optionData);
-			break;
-		case VISION_RAW_TAG:
-			parseVisionRawOption(optionData);
-			break;
-		case VISION_OF_TAG:
-			parseVisionOfOption(optionData);
-			break;
-		case VISION_TAG:
-			parseVisionOption(optionData);
-			break;
-		case VISION_PERF_TAG:
-			parseVisionPerfOption(optionData);
-			break;
-		case TRACKERS_SEND_TAG:
-			parseTrackersSendOption(optionData);
-			break;
-		case VISION_DETECT_TAG:
-			parseVisionDetectOption(optionData);
-			break;
-		case WATCHDOG_TAG:
-			parseWatchdogOption(optionData);
-			break;
-		case ADC_DATA_FRAME_TAG:
-			parseAdcDataFrameOption(optionData);
-			break;
-		case VIDEO_STREAM_TAG:
-			parseVideoStreamOption(optionData);
-			break;
-		case GAMES_TAG:
-			parseGamesOption(optionData);
-			break;
-		case PRESSURE_RAW_TAG:
-			parsePressureOption(optionData);
-			break;
-		case MAGNETO_TAG:
-			parseMagnetoDataOption(optionData);
-			break;
-		case WIND_TAG:
-			parseWindOption(optionData);
-			break;
-		case KALMAN_PRESSURE_TAG:
-			parseKalmanPressureOption(optionData);
-			break;
-		case HDVIDEO_STREAM_TAG:
-			parseHDVideoSteamOption(optionData);
-			break;
-		case WIFI_TAG:
-			parseWifiOption(optionData);
-			break;
-		case ZIMMU_3000_TAG:
-			parseZimmu3000Option(optionData);
-			break;
+			case CKS_TAG:
+				parseCksOption(optionData);
+				break;
+			case DEMO_TAG:
+				parseDemoOption(optionData);
+				break;
+			case TIME_TAG:
+				parseTimeOption(optionData);
+				break;
+			case RAW_MEASURES_TAG:
+				parseRawMeasuresOption(optionData);
+				break;
+			case PHYS_MEASURES_TAG:
+				parsePhysMeasuresOption(optionData);
+				break;
+			case GYROS_OFFSETS_TAG:
+				parseGyrosOffsetsOption(optionData);
+				break;
+			case EULER_ANGLES_TAG:
+				parseEulerAnglesOption(optionData);
+				break;
+			case REFERENCES_TAG:
+				parseReferencesOption(optionData);
+				break;
+			case TRIMS_TAG:
+				parseTrimsOption(optionData);
+				break;
+			case RC_REFERENCES_TAG:
+				parseRcReferencesOption(optionData);
+				break;
+			case PWM_TAG:
+				parsePWMOption(optionData);
+				break;
+			case ALTITUDE_TAG:
+				parseAltitudeOption(optionData);
+				break;
+			case VISION_RAW_TAG:
+				parseVisionRawOption(optionData);
+				break;
+			case VISION_OF_TAG:
+				parseVisionOfOption(optionData);
+				break;
+			case VISION_TAG:
+				parseVisionOption(optionData);
+				break;
+			case VISION_PERF_TAG:
+				parseVisionPerfOption(optionData);
+				break;
+			case TRACKERS_SEND_TAG:
+				parseTrackersSendOption(optionData);
+				break;
+			case VISION_DETECT_TAG:
+				parseVisionDetectOption(optionData);
+				break;
+			case WATCHDOG_TAG:
+				parseWatchdogOption(optionData);
+				break;
+			case ADC_DATA_FRAME_TAG:
+				parseAdcDataFrameOption(optionData);
+				break;
+			case VIDEO_STREAM_TAG:
+				parseVideoStreamOption(optionData);
+				break;
+			case GAMES_TAG:
+				parseGamesOption(optionData);
+				break;
+			case PRESSURE_RAW_TAG:
+				parsePressureOption(optionData);
+				break;
+			case MAGNETO_TAG:
+				parseMagnetoDataOption(optionData);
+				break;
+			case WIND_TAG:
+				parseWindOption(optionData);
+				break;
+			case KALMAN_PRESSURE_TAG:
+				parseKalmanPressureOption(optionData);
+				break;
+			case HDVIDEO_STREAM_TAG:
+				parseHDVideoSteamOption(optionData);
+				break;
+			case WIFI_TAG:
+				parseWifiOption(optionData);
+				break;
+			case ZIMMU_3000_TAG:
+				parseZimmu3000Option(optionData);
+				break;
 		}
 
 	}
@@ -580,7 +585,7 @@ public class NavDataManager extends AbstractManager
 		// TODO: verify if link quality stays below Integer.MAX_INT
 		if (wifiListener.size() > 0) {
 			long link_quality = getUInt32(b);
-			
+
 			for (int i=0; i < wifiListener.size(); i++)
 				wifiListener.get(i).received(link_quality);
 		}
@@ -616,7 +621,7 @@ public class NavDataManager extends AbstractManager
 
 			HDVideoStreamData d = new HDVideoStreamData(hdvideo_state, storage_fifo_nb_packets, storage_fifo_size,
 					usbkey_size, usbkey_freespace, frame_number, usbkey_remaining_time);
-			
+
 			for (int i=0; i < videoListener.size(); i++)
 				videoListener.get(i).receivedHDVideoStreamData(d);
 		}
@@ -646,7 +651,7 @@ public class NavDataManager extends AbstractManager
 			KalmanPressureData d = new KalmanPressureData(offset_pressure, est_z, est_zdot, est_bias_PWM,
 					est_biais_pression, offset_US, prediction_US, cov_alt, cov_PWM, cov_vitesse, effet_sol, somme_inno,
 					rejet_US, u_multisinus, gaz_altitude, multisinus, multisinus_debut);
-			
+
 			for (int i=0; i < pressureListener.size(); i++)
 				pressureListener.get(i).receivedKalmanPressure(d);
 		}
@@ -767,7 +772,7 @@ public class NavDataManager extends AbstractManager
 			VideoStreamData d = new VideoStreamData(quant, frame_size, frame_number, atcmd_ref_seq, atcmd_mean_ref_gap,
 					atcmd_var_ref_gap, atcmd_ref_quality, out_bitrate, desired_bitrate, temp_data, tcp_queue_level,
 					fifo_queue_level);
-			
+
 			for (int i=0; i < videoListener.size(); i++)
 				videoListener.get(i).receivedVideoStreamData(d);
 		}
@@ -836,7 +841,7 @@ public class NavDataManager extends AbstractManager
 
 			VisionPerformance d = new VisionPerformance(time_szo, time_corners, time_compute, time_tracking,
 					time_trans, time_update, time_custom);
-			
+
 			for (int i=0; i < visionListener.size(); i++)
 				visionListener.get(i).receivedPerformanceData(d);
 		}
@@ -872,7 +877,7 @@ public class NavDataManager extends AbstractManager
 					vision_theta_trim, vision_theta_ref_prop, new_raw_picture, theta_capture, phi_capture, psi_capture,
 					altitude_capture, time_capture_seconds, time_capture_useconds, body_v, delta_phi, delta_theta,
 					delta_psi, gold_defined, gold_reset, gold_x, gold_y);
-			
+
 			for (int i=0; i < visionListener.size(); i++)
 				visionListener.get(i).receivedData(d);
 		}
@@ -921,7 +926,7 @@ public class NavDataManager extends AbstractManager
 
 			Altitude d = new Altitude(altitude_vision, altitude_vz, altitude_ref, altitude_raw, obs_accZ, obs_alt,
 					obs_x, obs_state, est_vb, est_state);
-			
+
 			for (int i=0; i < altitudeListener.size(); i++)
 				altitudeListener.get(i).receivedExtendedAltitude(d);
 		}
@@ -948,7 +953,7 @@ public class NavDataManager extends AbstractManager
 
 			PWMData d = new PWMData(motor, sat_motor, gaz_feed_forward, gaz_altitude, altitude_integral, vz_ref, u_pry,
 					yaw_u_I, u_planif_pry, u_gaz_planif, current_motor, altitude_prop, altitude_der);
-			
+
 			for (int i=0; i < pwmlistener.size(); i++)
 				pwmlistener.get(i).received(d);
 		}
@@ -1001,7 +1006,7 @@ public class NavDataManager extends AbstractManager
 			ReferencesData d = new ReferencesData(ref_theta, ref_phi, ref_theta_I, ref_phi_I, ref_pitch, ref_roll,
 					ref_yaw, ref_psi, v_ref, theta_mod, phi_mod, k_v, k_mode, ui_time, ui_theta, ui_phi, ui_psi,
 					ui_psi_accuracy, ui_seq);
-			
+
 			for (int i=0; i < referencesListener.size(); i++)
 				referencesListener.get(i).receivedReferences(d);
 		}
@@ -1079,7 +1084,7 @@ public class NavDataManager extends AbstractManager
 				UltrasoundData d = new UltrasoundData(us_echo_start, us_echo_end, us_association_echo,
 						us_distance_echo, us_cycle_time, us_cycle_value, us_cycle_ref, flag_echo_ini, nb_echo,
 						sum_echo, alt_temp_raw, gradient);
-				
+
 				for (int i=0; i < ultrasoundListener.size(); i++)
 					ultrasoundListener.get(i).receivedRawData(d);
 			}
@@ -1313,7 +1318,7 @@ public class NavDataManager extends AbstractManager
 
 			MagnetoData md = new MagnetoData(m, mraw, mrectified, m_, heading_unwrapped, heading_gyro_unwrapped,
 					heading_fusion_unwrapped, calibration_ok, state, radius, error_mean, error_var);
-			
+
 			for (int i=0; i < magnetoListener.size(); i++)
 				magnetoListener.get(i).received(md);
 		}
