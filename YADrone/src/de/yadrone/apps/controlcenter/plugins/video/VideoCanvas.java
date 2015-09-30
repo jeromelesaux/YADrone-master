@@ -41,7 +41,7 @@ public class VideoCanvas extends JPanel
 			}
 		});
 		
-		waitingImage = new ImageIcon(VideoCanvas.class.getResource("hourglass.png")).getImage();
+		waitingImage = new ImageIcon(VideoCanvas.class.getResource("/hourglass.png")).getImage();
 		
 		// if for some time no video is received, a waiting screen shall be displayed
 		new Thread(new Runnable() {

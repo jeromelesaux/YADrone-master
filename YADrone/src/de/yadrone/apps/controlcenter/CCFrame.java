@@ -13,15 +13,18 @@ import java.awt.event.WindowListener;
 public class CCFrame extends JFrame
 {
 	private ARDrone drone;
-	private GameControllerCommandManager controllerCommand;
+
+	private GameControllerCommandManager gameControllerCommandManager;
 	
 	public CCFrame(ARDrone ardrone)
 	{
 		super("YADrone Control Center");
 		
-		setSize(1024, 768);
+		setSize(1200, 800 );
 		
 		this.drone = ardrone;
+
+
 		
 		try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -57,11 +60,12 @@ public class CCFrame extends JFrame
         // the plugin manager is a mandatory component, because it is used to start all other plugins
         
         final PluginManager pluginManager = new PluginManager();
+		gameControllerCommandManager = new GameControllerCommandManager();
         pluginManager.setDesktop(desktop);
         pluginManager.activate(ardrone);
         
         JInternalFrame frame = new JInternalFrame(pluginManager.getTitle(), true, false, true, true);
-	    frame.setSize(500, 300);
+	    frame.setSize(500, 500);
 	    frame.setLocation(0, getSize().height - frame.getSize().height - 40);
 	    frame.setContentPane(pluginManager);
 	    frame.setVisible(true);
@@ -120,8 +124,6 @@ public class CCFrame extends JFrame
 //			e.printStackTrace();
 //		}
 
-		// call backend thread for the game controller.
-		controllerCommand = new GameControllerCommandManager(this.drone);
-		controllerCommand.start();
+
 	}
 }

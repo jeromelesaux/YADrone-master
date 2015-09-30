@@ -853,12 +853,14 @@ public class CommandManager extends AbstractManager
 			} 
 			catch (InterruptedException e) 
 			{
-				e.printStackTrace();
+				System.out.println(e.getMessage());
+				//e.printStackTrace();
 				doStop = true;
 				excListener.exeptionOccurred(new CommandException(e));
 			} 
 			catch (Throwable t) {
-				t.printStackTrace();
+				//t.printStackTrace();
+				System.out.println(t.getMessage());
 				excListener.exeptionOccurred(new CommandException(t));
 			}
 		}
@@ -893,7 +895,7 @@ public class CommandManager extends AbstractManager
 
 	private synchronized void sendCommand(ATCommand c) throws InterruptedException, IOException {
 		if (!(c instanceof KeepAliveCommand)) {
-			 System.out.println("CommandManager: send " + c.getCommandString(seq));
+			// System.out.println("CommandManager: send " + c.getCommandString(seq));
 		}
 		
 		String config = "AT*CONFIG_IDS=" + (seq++) + ",\"" + CommandManager.SESSION_ID + "\",\"" + CommandManager.PROFILE_ID +"\",\"" + CommandManager.APPLICATION_ID + "\"" + "\r"; // AT*CONFIG_IDS=5,"aabbccdd","bbccddee","ccddeeff"

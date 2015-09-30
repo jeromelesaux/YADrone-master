@@ -33,7 +33,8 @@ public class KeyboardLayoutPanel extends JPanel implements ICCPlugin
 	public KeyboardLayoutPanel()
 	{
 		loadImage(CCPropertyManager.getInstance().isKeyboardCommandManagerAlternative());
-		
+
+
 		originalButton = new JRadioButton("Original Layout");
 		originalButton.setOpaque(false);
 		originalButton.addActionListener(new ActionListener() {
@@ -147,7 +148,7 @@ public class KeyboardLayoutPanel extends JPanel implements ICCPlugin
     		cmdManager = new KeyboardCommandManagerAlternative(drone);
     	else
     		cmdManager = new KeyboardCommandManager(drone);
-		
+
 		// CommandManager handles (keyboard) input and dispatches events to the drone		
 		System.out.println("KeyboardLayoutPanel: grab the whole keyboard input from now on ...");
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -157,7 +158,8 @@ public class KeyboardLayoutPanel extends JPanel implements ICCPlugin
 	public void deactivate()
 	{
 		System.out.println("KeyboardLayoutPanel: release key event dispatcher ...");
-		
+
+
 		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         manager.removeKeyEventDispatcher(keyEventDispatcher);
 	}

@@ -104,6 +104,12 @@
     <build>
         <resources>
             <resource>
+                <directory>${project.basedir}/src/main/java/de/yadrone/apps/controlcenter/plugins/video/</directory>
+                <includes>
+                    <include>**/*.png</include>
+                </includes>
+            </resource>
+            <resource>
                 <directory>${project.basedir}/src/main/java/de/yadrone/apps/controlcenter/img/</directory>
                 <includes>
                     <include>**/*.jpg</include>
